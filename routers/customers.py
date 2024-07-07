@@ -49,7 +49,7 @@ def read_customer(customer_id: int, db: so.Session = Depends(get_db)):
 
 
 @router.post("/customers/{customer_id}/orders/", response_model=schemas.Order)
-def create_order_for_customer(customer_id: int, item_id: int, date: date, qty: int, db: so.Session = Depends(get_db)):
+def create_order_for_customer(customer_id: int, item_id: str, date: date, qty: int, db: so.Session = Depends(get_db)):
     db_customer = db.query(Customers).filter(Customers.cust_id == customer_id).first()
     if db_customer is None:
         raise HTTPException(status_code=404, detail="Customer not found")

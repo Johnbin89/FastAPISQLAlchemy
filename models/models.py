@@ -39,7 +39,7 @@ class Customers(Base):
 class Items(Base):
     __tablename__ = 'items'
 
-    item_id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    item_id: so.Mapped[str] = so.mapped_column(primary_key=True)
     item_description: so.Mapped[str]
     item_price: so.Mapped[num_10_2] = so.mapped_column(nullable=True)
 
@@ -52,7 +52,7 @@ class Orders(Base):
     order_date: so.Mapped[date]
     order_qty: so.Mapped[int]
     cust_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("customers.cust_id"))
-    item_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("items.item_id"))
+    item_id: so.Mapped[str] = so.mapped_column(sa.ForeignKey("items.item_id"))
 
     customer = so.relationship("Customers", back_populates="orders")
     item = so.relationship("Items", back_populates="orders")
