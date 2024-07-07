@@ -3,7 +3,7 @@ from decimal import Decimal
 from datetime import date
 
 class ItemBase(BaseModel):
-    item_id: str
+    item_id: int
 
 
 
@@ -17,7 +17,7 @@ class Item(ItemBase):
 
 
 class CustomerBase(BaseModel):
-    cust_id: str
+    cust_id: int
     cust_firstname: str
     cust_lastname: str
 
@@ -30,7 +30,7 @@ class Customer(CustomerBase):
 
 
 class OrderBase(BaseModel):
-    order_id: str
+    order_id: int
     order_date: date
     order_qty: int
     cust_id: int
