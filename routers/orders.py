@@ -35,5 +35,5 @@ def read_orders(skip: int = 0, limit: int = 100, db: sa.Session = Depends(get_db
 def read_order(order_id: int, db: sa.Session = Depends(get_db)):
     db_order = db.query(Orders).filter(Orders.order_id == order_id).first()
     if db_order is None:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Order not found")
     return db_order
