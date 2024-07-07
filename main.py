@@ -1,8 +1,9 @@
 from fastapi import Depends, FastAPI
-
-
+from .models import models as models
 from .routers import items, customers, orders
 
+
+models.Base.metadata.create_all(bind=models.engine)
 app = FastAPI()
 
 
