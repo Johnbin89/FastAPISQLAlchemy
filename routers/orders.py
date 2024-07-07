@@ -4,7 +4,7 @@ from ..models import schemas as schemas
 from datetime import date
 
 
-router = APIRouter()
+router = APIRouter(tags=['orders'])
 
 '''
 @router.get("/customers/", tags=["users"])
