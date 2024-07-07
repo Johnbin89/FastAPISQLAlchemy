@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, FastAPI, HTTPException
-from ..models.models import SessionLocal, Customers, Items, Orders, sa
+from ..models.models import SessionLocal, Customers, Items, Orders, sa, so
 from ..models import schemas as schemas
 from datetime import date
 
@@ -28,11 +28,11 @@ def get_db():
 
 
 @router.get("/orders/", response_model=list[schemas.Order])
-def read_orders(skip: int = 0, limit: int = 100, db: sa.Session = Depends(get_db)):
+def read_orders(skip: int = 0, limit: int = 100, db: so.Session = Depends(get_db)):
     return db.query(Orders).offset(skip).limit(limit).all()
 
 @router.get("/orders/{order_id}", response_model=schemas.Order)
-def read_order(order_id: int, db: sa.Session = Depends(get_db)):
+def read_order(order_id: int, db: so.Session = Depends(get_db)):
     db_order = db.query(Orders).filter(Orders.order_id == order_id).first()
     if db_order is None:
         raise HTTPException(status_code=404, detail="Order not found")
