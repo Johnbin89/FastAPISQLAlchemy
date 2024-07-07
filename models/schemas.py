@@ -19,12 +19,13 @@ class Item(ItemBase):
 
     class Config:
         orm_mode = True
+        arbitrary_types_allowed = True
 
 
 class CustomerBase(BaseModel):
     cust_id: str
     cust_firstname: str
-    cust_lastname: SupportsComplex
+    cust_lastname: str
 
 
 class Customer(CustomerBase):
