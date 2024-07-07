@@ -1,25 +1,19 @@
 from pydantic import BaseModel
-from typing import SupportsComplex
+from decimal import Decimal
 from datetime import date
 
 class ItemBase(BaseModel):
     item_id: str
 
 
-class ItemForOrder():
-    item_id: str
-
-    class Config:
-        orm_mode = True
-
 
 class Item(ItemBase):
     item_description: str
-    item_price: SupportsComplex
+    item_price: Decimal
 
     class Config:
-        orm_mode = True
-        arbitrary_types_allowed = True
+        from_attributes = True
+
 
 
 class CustomerBase(BaseModel):
@@ -31,7 +25,7 @@ class CustomerBase(BaseModel):
 class Customer(CustomerBase):
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 
@@ -46,4 +40,4 @@ class OrderBase(BaseModel):
 class Order(OrderBase):
 
     class Config:
-        orm_mode = True
+        from_attributes = True
