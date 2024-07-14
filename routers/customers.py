@@ -47,6 +47,18 @@ def read_customer(customer_id: int, db: so.Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Customer not found")
     return db_customer
 
+@router.put("/customers/{customer_id}", response_model=schemas.Customer)
+def edit_customer(customer_id: int, first_name:str = None, last_name :str =None, db: so.Session = Depends(get_db)):
+    db_customer = db.query(Customers).filter(Customers.cust_id == customer_id).first()
+    if db_customer is None:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    
+    if first_name: db_customer.cust_firstname = first_name
+    if last_name: db_customer.cust_lastname = last_name
+    db.commit()
+    db.refresh(db_customer)
+    return db_customer
+
 
 @router.post("/customers/{customer_id}/orders/", response_model=schemas.Order)
 def create_order_for_customer(customer_id: int, item_id: str, date: date, qty: int, db: so.Session = Depends(get_db)):

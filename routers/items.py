@@ -45,3 +45,9 @@ def read_item(item_id: int, db: so.Session = Depends(get_db)):
     if db_item is None:
         raise HTTPException(status_code=404, detail="Item not found")
     return db_item
+
+@router.get("/items/description/")
+def get_orders_for_item(sub_desc: str, db: so.Session = Depends(get_db)):
+    stmt = sa.select(Orders.order_id,  Items.item_description, Orders.order_qty).join(Items.orders).where(Items.item_description.contains('TV'))
+    result = db.execute(stmt).mappings().all()
+    return result

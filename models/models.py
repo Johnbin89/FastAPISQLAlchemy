@@ -8,7 +8,7 @@ from decimal import Decimal
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 database_url='sqlite:///' + os.path.join(basedir, 'data.sqlite')
-engine = sa.create_engine(database_url, connect_args={"check_same_thread": False})
+engine = sa.create_engine(database_url, echo=True, connect_args={"check_same_thread": False})
 #check_same_thread only for SQLite: https://fastapi.tiangolo.com/tutorial/sql-databases/#create-the-sqlalchemy-engine
 
 SessionLocal = so.sessionmaker(bind=engine)
@@ -48,7 +48,7 @@ class Items(Base):
 class Orders(Base):
     __tablename__ = 'orders'
 
-    order_id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    order_id: so.Mapped[int] = so.mapped_column(sa.Identity(start=1001) ,primary_key=True)
     order_date: so.Mapped[date]
     order_qty: so.Mapped[int]
     cust_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey("customers.cust_id"))
