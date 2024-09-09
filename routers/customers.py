@@ -71,7 +71,7 @@ async def edit_customer(customer_id: int, first_name:str = None, last_name :str 
     return db_customer
 
 
-@router.post("/customers/{customer_id}/orders/", response_model=schemas.Order)
+@router.post("/customers/{customer_id}/orders/", response_model=schemas.Order, status_code=status.HTTP_201_CREATED)
 async def create_order_for_customer(customer_id: int, item_id: str, date: date, qty: int, db: AsyncSession = Depends(get_db)):
     async with db.begin():
         stmt = sa.select(Customers).filter(Customers.cust_id == customer_id)
