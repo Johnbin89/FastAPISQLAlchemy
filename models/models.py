@@ -1,17 +1,22 @@
 import os
-from sqlalchemy.ext.declarative import declarative_base
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker
 from datetime import date
 from typing_extensions import Annotated
 from decimal import Decimal
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-database_url='sqlite:///' + os.path.join(basedir, 'data.sqlite')
-engine = sa.create_engine(database_url, echo=True, connect_args={"check_same_thread": False})
+database_url='sqlite+aiosqlite:///' + os.path.join(basedir, 'data.sqlite')
+engine = create_async_engine(database_url, echo=True, echo_pool=True, connect_args={"check_same_thread": False})
 #check_same_thread only for SQLite: https://fastapi.tiangolo.com/tutorial/sql-databases/#create-the-sqlalchemy-engine
 
-SessionLocal = so.sessionmaker(bind=engine)
+# expire_on_commit=False will prevent attributes from being expired after commit.
+async_session = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+
+async def get_db():
+    async with async_session() as session:
+        yield session
 
 str_30 = Annotated[str, 30]
 str_50 = Annotated[str, 50]

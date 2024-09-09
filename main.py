@@ -1,9 +1,11 @@
-from fastapi import Depends, FastAPI
-from .models import models as models
-from .routers import items, customers, orders
+from fastapi import FastAPI
+from fastapisqlalchemy.models import models as models
+from fastapisqlalchemy.routers import items, customers, orders
 
+#DB migrate:
+#makemigrations command: alembic revision --autogenerate -m "<message>"
+#upgrade: alembic upgrade head
 
-models.Base.metadata.create_all(bind=models.engine)
 app = FastAPI()
 
 
