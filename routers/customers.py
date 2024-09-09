@@ -20,12 +20,12 @@ async def read_customer(username: str):
 
 @router.post("/customers/", response_model=schemas.Customer)
 async def create_customer(customer: schemas.Customer, db: AsyncSession = Depends(get_db)):
-    db_customer = Customers(cust_id=customer.cust_id, cust_firstname=customer.cust_firstname, cust_lastname=customer.cust_lastname)
     async with db.begin():
-        db.add(db_customer)
-        await db.commit()
-    async with db.begin():
-        await db.refresh(db_customer)
+        stmt = sa.insert(Customers).values({Customers.cust_id :customer.cust_id, 
+                                         Customers.cust_firstname :customer.cust_firstname,
+                                         Customers.cust_lastname: customer.cust_lastname})\
+                .returning(Customers)
+        db_customer = (await db.execute(stmt)).scalar_one_or_none()
     return db_customer
 
 
